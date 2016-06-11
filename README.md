@@ -1,7 +1,7 @@
 couchdb-go
 ==========
 
-[![Build Status](https://travis-ci.org/rhinoman/couchdb-go.svg?branch=master)](https://travis-ci.org/rhinoman/couchdb-go)
+[![Build Status](https://travis-ci.org/firmfirm/couchdb-go.svg?branch=master)](https://travis-ci.org/firmfirm/couchdb-go)
 
 Description
 -----------
@@ -13,13 +13,13 @@ Installation
 ------------
 
 ```
-go get github.com/rhinoman/couchdb-go
+go get github.com/firmfirm/couchdb-go
 ```
 
 Documentation
 -------------
 
-See the Godoc: http://godoc.org/github.com/rhinoman/couchdb-go
+See the Godoc: http://godoc.org/github.com/firmfirm/couchdb-go
 
 Example Usage
 -------------

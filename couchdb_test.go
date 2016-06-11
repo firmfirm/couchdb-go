@@ -3,10 +3,11 @@ package couchdb_test
 import (
 	"bytes"
 	//"encoding/json"
-	"github.com/rhinoman/couchdb-go"
-	"github.com/twinj/uuid"
 	"io/ioutil"
 	"math/rand"
+
+	"github.com/rhinoman/couchdb-go"
+	"github.com/twinj/uuid"
 	//"net/http"
 	"strconv"
 	"testing"
@@ -71,8 +72,7 @@ type DesignDocument struct {
 }
 
 func getUuid() string {
-	theUuid := uuid.NewV4()
-	return uuid.Formatter(theUuid, uuid.Clean)
+	return uuid.NewV4().String()
 }
 
 func getConnection(t *testing.T) *couchdb.Connection {
@@ -573,7 +573,7 @@ func TestDesignDocs(t *testing.T) {
 			var row;
 			var response={
 				total_rows:0,
-				offset:0, 
+				offset:0,
 				rows:[]
 			};
 			while(row=getRow()){

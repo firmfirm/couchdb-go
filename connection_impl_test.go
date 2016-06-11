@@ -33,7 +33,7 @@ func TestUrlBuilding(t *testing.T) {
 
 func TestConnection(t *testing.T) {
 	client := &http.Client{}
-	c := connection{
+	c := ConnectionImpl{
 		url:    serverUrl,
 		client: client,
 	}
@@ -64,7 +64,7 @@ func TestConnection(t *testing.T) {
 func TestBasicAuth(t *testing.T) {
 	client := &http.Client{}
 	auth := BasicAuth{Username: "adminuser", Password: "password"}
-	c := connection{
+	c := ConnectionImpl{
 		url:    serverUrl,
 		client: client,
 	}
@@ -84,7 +84,7 @@ func TestProxyAuth(t *testing.T) {
 		Username: "adminuser",
 		Roles:    []string{"admin", "master", "_admin"},
 	}
-	c := connection{
+	c := ConnectionImpl{
 		url:    serverUrl,
 		client: client,
 	}
@@ -101,7 +101,7 @@ func TestProxyAuth(t *testing.T) {
 func TestBadAuth(t *testing.T) {
 	client := &http.Client{}
 	auth := BasicAuth{Username: "notauser", Password: "what?"}
-	c := connection{
+	c := ConnectionImpl{
 		url:    serverUrl,
 		client: client,
 	}

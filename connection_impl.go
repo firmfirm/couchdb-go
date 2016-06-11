@@ -12,14 +12,14 @@ import (
 	"time"
 )
 
-//represents a couchdb 'connection'
-type connection struct {
+// ConnectionImpl represents a couchdb connection implementation
+type ConnectionImpl struct {
 	url    string
 	client *http.Client
 }
 
 //processes a request
-func (conn *connection) request(method, path string,
+func (conn *ConnectionImpl) request(method, path string,
 	body io.Reader, headers map[string]string, auth Auth) (*http.Response, error) {
 
 	req, err := http.NewRequest(method, conn.url+path, body)
@@ -42,7 +42,7 @@ func (conn *connection) request(method, path string,
 
 //Returns a result from couchdb directly to a requesting client
 //Useful for downloading large files
-func (conn *connection) reverseProxyRequest(w http.ResponseWriter,
+func (conn *ConnectionImpl) reverseProxyRequest(w http.ResponseWriter,
 	r *http.Request, path string, auth Auth) error {
 	target, err := url.Parse(conn.url)
 	if err != nil {
@@ -73,17 +73,17 @@ func singleJoiningSlash(a, b string) string {
 	return a + b
 }
 
-func (conn *connection) processResponse(numTries int,
+func (conn *ConnectionImpl) processResponse(numTries int,
 	req *http.Request) (*http.Response, error) {
 	resp, err := conn.client.Do(req)
 	if err != nil {
 		errStr := err.Error()
 		// Because sometimes couchdb rudely
-		// slams the connection shut and we get a race condition.
+		// slams the ConnectionImpl shut and we get a race condition.
 		// Of course, Go http presents one of two possibilities
 		// for error strings, so we check for both.
 		if (strings.Contains(errStr, "EOF") ||
-			strings.Contains(errStr, "broken connection")) && numTries < 3 {
+			strings.Contains(errStr, "broken ConnectionImpl")) && numTries < 3 {
 			//wait a bit and try again
 			fmt.Printf("\nERROR! %v\n", errStr)
 			time.Sleep(10 * time.Millisecond)
@@ -176,7 +176,7 @@ func buildString(pathSegments []string) string {
 	return urlString
 }
 
-func makeSegments(pathSegments []string) ([]string) {
+func makeSegments(pathSegments []string) []string {
 	segments := []string{}
 	for _, segment := range pathSegments {
 		segments = append(segments, strings.Split(segment, "/")...)
