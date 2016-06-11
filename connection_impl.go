@@ -14,15 +14,15 @@ import (
 
 // ConnectionImpl represents a couchdb connection implementation
 type ConnectionImpl struct {
-	url    string
-	client *http.Client
+	URL    string
+	Client *http.Client
 }
 
 //processes a request
 func (conn *ConnectionImpl) request(method, path string,
 	body io.Reader, headers map[string]string, auth Auth) (*http.Response, error) {
 
-	req, err := http.NewRequest(method, conn.url+path, body)
+	req, err := http.NewRequest(method, conn.URL+path, body)
 	//set headers
 	for k, v := range headers {
 		req.Header.Set(k, v)
@@ -44,7 +44,7 @@ func (conn *ConnectionImpl) request(method, path string,
 //Useful for downloading large files
 func (conn *ConnectionImpl) reverseProxyRequest(w http.ResponseWriter,
 	r *http.Request, path string, auth Auth) error {
-	target, err := url.Parse(conn.url)
+	target, err := url.Parse(conn.URL)
 	if err != nil {
 		return err
 	}
@@ -75,7 +75,7 @@ func singleJoiningSlash(a, b string) string {
 
 func (conn *ConnectionImpl) processResponse(numTries int,
 	req *http.Request) (*http.Response, error) {
-	resp, err := conn.client.Do(req)
+	resp, err := conn.Client.Do(req)
 	if err != nil {
 		errStr := err.Error()
 		// Because sometimes couchdb rudely

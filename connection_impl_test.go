@@ -34,8 +34,8 @@ func TestUrlBuilding(t *testing.T) {
 func TestConnection(t *testing.T) {
 	client := &http.Client{}
 	c := ConnectionImpl{
-		url:    serverUrl,
-		client: client,
+		URL:    serverUrl,
+		Client: client,
 	}
 	resp, err := c.request("GET", "/", nil, nil, nil)
 	if err != nil {
@@ -65,8 +65,8 @@ func TestBasicAuth(t *testing.T) {
 	client := &http.Client{}
 	auth := BasicAuth{Username: "adminuser", Password: "password"}
 	c := ConnectionImpl{
-		url:    serverUrl,
-		client: client,
+		URL:    serverUrl,
+		Client: client,
 	}
 	resp, err := c.request("GET", "/", nil, nil, &auth)
 	if err != nil {
@@ -85,8 +85,8 @@ func TestProxyAuth(t *testing.T) {
 		Roles:    []string{"admin", "master", "_admin"},
 	}
 	c := ConnectionImpl{
-		url:    serverUrl,
-		client: client,
+		URL:    serverUrl,
+		Client: client,
 	}
 	resp, err := c.request("GET", "/", nil, nil, &pAuth)
 	if err != nil {
@@ -102,8 +102,8 @@ func TestBadAuth(t *testing.T) {
 	client := &http.Client{}
 	auth := BasicAuth{Username: "notauser", Password: "what?"}
 	c := ConnectionImpl{
-		url:    serverUrl,
-		client: client,
+		URL:    serverUrl,
+		Client: client,
 	}
 	resp, err := c.request("GET", "/", nil, nil, &auth)
 	if err == nil {

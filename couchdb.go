@@ -48,8 +48,8 @@ func createConnection(rawUrl string, timeout time.Duration) (*Connection, error)
 	}
 	return &Connection{
 		&ConnectionImpl{
-			url:    theUrl.String(),
-			client: &http.Client{Timeout: timeout},
+			URL:    theUrl.String(),
+			Client: &http.Client{Timeout: timeout},
 		},
 	}, nil
 
