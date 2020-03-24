@@ -6,6 +6,7 @@ import (
 	"errors"
 	"fmt"
 	"io"
+	"log"
 	"net/http"
 	"net/url"
 	"reflect"
@@ -75,7 +76,7 @@ func (conn *Connection) GetDBList() (dbList []string, err error) {
 	return dbList, err
 }
 
-//Create a new Database.
+// CreateDB creates a new CouchDB Database.
 func (conn *Connection) CreateDB(name string, auth Auth) error {
 	url, err := buildUrl(name)
 	if err != nil {
@@ -85,10 +86,11 @@ func (conn *Connection) CreateDB(name string, auth Auth) error {
 	if err == nil {
 		resp.Body.Close()
 	}
+
 	return err
 }
 
-//Delete a Database.
+// DeleteDB deletes a CouchDB Database.
 func (conn *Connection) DeleteDB(name string, auth Auth) error {
 	url, err := buildUrl(name)
 	if err != nil {
@@ -101,7 +103,7 @@ func (conn *Connection) DeleteDB(name string, auth Auth) error {
 	return err
 }
 
-//Set a CouchDB configuration option
+// SetConfig sets a CouchDB configuration option
 func (conn *Connection) SetConfig(section string,
 	option string, value string, auth Auth) error {
 	url, err := buildUrl("_config", section, option)
@@ -116,7 +118,7 @@ func (conn *Connection) SetConfig(section string,
 	return err
 }
 
-//Gets a CouchDB configuration option
+// GetConfigOption gets a CouchDB configuration option
 func (conn *Connection) GetConfigOption(section string,
 	option string, auth Auth) (string, error) {
 	url, err := buildUrl("_config", section, option)
@@ -143,10 +145,10 @@ type UserRecord struct {
 
 }
 
-//Add a User.
-//This is a convenience method for adding a simple user to CouchDB.
-//If you need a User with custom fields, etc., you'll just have to use the
-//ordinary document methods on the "_users" database.
+// AddUser creates a new CouchDB user.
+// This is a convenience method for adding a simple user to CouchDB.
+// If you need a User with custom fields, etc., you'll just have to use the
+// ordinary document methods on the "_users" database.
 func (conn *Connection) AddUser(username string, password string,
 	roles []string, auth Auth) (string, error) {
 
@@ -161,7 +163,7 @@ func (conn *Connection) AddUser(username string, password string,
 
 }
 
-//Grants a role to a user
+// GrantRole provides a role to a user
 func (conn *Connection) GrantRole(username string, role string,
 	auth Auth) (string, error) {
 	userDb := conn.SelectDB("_users", auth)
@@ -190,7 +192,7 @@ func (conn *Connection) GrantRole(username string, role string,
 	return userDb.Save(&userMap, namestring, rev)
 }
 
-//Revoke a user role
+// RevokeRole removes a user role
 func (conn *Connection) RevokeRole(username string, role string,
 	auth Auth) (string, error) {
 
@@ -392,6 +394,7 @@ func (db *Database) Save(doc interface{}, id string, rev string) (string, error)
 	}
 	resp, err := db.connection.request("PUT", url, data, headers, db.auth)
 	if err != nil {
+		log.Printf("db.connection.request fail %s", err)
 		return "", err
 	}
 	resp.Body.Close()
